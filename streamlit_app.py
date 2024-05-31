@@ -13,9 +13,9 @@ name_on_order = st.text_input("Name on Smoothie")
 st.write("The name on your smoothie will be: ", name_on_order)
 
 cnx = st.connection("snowflake")
-sesh = cnx.session()
+session = cnx.session()
 
-my_dataframe = sesh.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
+my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
 
 ingredients_list = st.multiselect("Choose up to 5 ingredients", my_dataframe, max_selections=5)
 
@@ -34,7 +34,7 @@ if ingredients_list:
     time_to_insert = st.button('Submit Order')
     
     if time_to_insert:
-        sesh.sql(my_insert_stmt).collect()
+        session.sql(my_insert_stmt).collect()
         st.success('Your Smoothie is ordered!', icon="✅")
 
 
