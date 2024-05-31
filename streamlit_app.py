@@ -19,7 +19,6 @@ session = cnx.session()
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
 
 pd_df=my_dataframe.to_pandas()
-st.dataframe(pd_df)
 
 ingredients_list = st.multiselect("Choose up to 5 ingredients", my_dataframe, max_selections=5)
 
@@ -34,7 +33,7 @@ if ingredients_list:
         search_on=pd_df.loc[pd_df['FRUIT_NAME'] == x, 'SEARCH_ON'].iloc[0]
         st.write('The search value for ', x,' is ', search_on, '.')
         
-        fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + search_on)
+        fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + x)
         fv_df = st.dataframe(data=fruityvice_response.json(), use_container_width=True)
 
     st.write(ingredients_string)
